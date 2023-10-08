@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import UserEnterFace from "./components/userEnterFace";
+import UserDetail from "./components/UserDetail";
+
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
+
+  const [oldProductDetails, SetProduct] = useState([]);
+  const [oldPrice, totalPrice] = useState(0);
+ console.log(oldPrice)
+  const ChangeUsers = (PrdId, PrdName, PrdPrice) => {
+
+    totalPrice(PrdPrice);
+    let mergeTxt = ' product Name ='+PrdName+' product Price='+PrdPrice+' Product id='+PrdId
+    localStorage.setItem(PrdId,mergeTxt)
+    SetProduct((previosState) => {
+      return [
+        ...previosState,
+        { ProductId: PrdId, ProductName: PrdName, ProductPrice: PrdPrice,MergedText:mergeTxt,Total:oldPrice },
+      ];
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <UserEnterFace changeUsers={ChangeUsers}></UserEnterFace>
+      <h2>Products Details</h2>
+      <UserDetail users={oldProductDetails} Total={oldPrice} ></UserDetail>
     </div>
   );
 }
